@@ -1,6 +1,6 @@
 const express= require('express');
 const app= express();
-//Routes
+
 app.get("/ab?c", (req, res)=>{
     res.send("? Testing");
 })
@@ -44,7 +44,7 @@ app.use("/Hello", (req,res)=>{
 
 
 
-// Multiple Route Handlers
+
 app.use("/User", (req, res, next)=>{
     console.log("1st response");
     // res.send("1st Response");
@@ -65,31 +65,6 @@ app.use("/User", (req, res, next)=>{
     console.log("4th response");
     res.send("4th Response");
 })
-
-
-
-//Middlewares
-
-const {adminAuth, userAuth}= require("./Middlewares/adminAuth")
-
-app.use("/admin", adminAuth);
-
-app.get("/admin/getData", (req, res)=>{
-    res.send("Got all Data");
-})
-
-app.delete("/admin/deleteData", (req, res)=>{
-    res.send("Deleted Data");
-})
-
-app.get("/user/data", userAuth, (req, res)=>{
-    res.send("UserData sent");
-})
-
-app.get("/user/login", (req, res)=>{
-    res.send("User Login");
-})
-
 
 app.listen(7777, ()=>{
     console.log("Server runing on port 7777...");
