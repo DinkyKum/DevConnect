@@ -43,6 +43,29 @@ app.use("/Hello", (req,res)=>{
 })
 
 
+
+
+app.use("/User", (req, res, next)=>{
+    console.log("1st response");
+    // res.send("1st Response");
+    next();
+   
+},
+(req, res, next)=>{
+    console.log("2nd response");
+    // res.send("2nd Response");
+    next();
+},
+(req, res, next)=>{
+    console.log("3rd response");
+    res.send("3rd Response");
+    next();
+},
+(req, res, next)=>{
+    console.log("4th response");
+    res.send("4th Response");
+})
+
 app.listen(7777, ()=>{
     console.log("Server runing on port 7777...");
 })
