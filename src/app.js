@@ -5,6 +5,8 @@ require("./config/database");
 const connectDB=require("./config/database")
 const User= require('./models/user')
 
+app.use(express.json())
+
 connectDB().then(() => {
     console.log("Connection established successfully");
     app.listen(7777, () => {
@@ -17,12 +19,7 @@ connectDB().then(() => {
 
 
 app.post('/signup', async (req, res)=>{
-    const user= new User({
-        firstName:"ABC",
-        lastName:"Kumar",
-        contact:83492749234,
-        age:20
-    })
+    const user= new User(req.body);
     
    try{
     await user.save();
