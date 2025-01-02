@@ -1,44 +1,41 @@
 const express= require('express');
 const app= express();
+require("./config/database");
 
-//Middlewares
+const connectDB=require("./config/database")
+const User= require('./models/user')
 
-const {adminAuth, userAuth}= require("./Middlewares/adminAuth")
+connectDB().then(() => {
+    console.log("Connection established successfully");
+    app.listen(7777, () => {
+      console.log("Server running on port 7777...");
+    });
+  })
+  .catch((err) => {
+    console.error("Cannot connect to DB: " + err);
+  });
 
-app.use("/admin", adminAuth);
 
-app.get("/admin/getData", (req, res)=>{
-    res.send("Got all Data");
-})
-
-app.delete("/admin/deleteData", (req, res)=>{
-    res.send("Deleted Data");
-})
-
-app.get("/user/data", userAuth, (req, res)=>{
-    try{
-        throw new error(jsndfjnsj);
-        res.send("UserData sent");
-    }
-    catch(err){
-        res.status(500).send("Internal Server error");
-
-    }
+app.post('/signup', async (req, res)=>{
+    const user= new User({
+        firstName:"ABC",
+        lastName:"Kumar",
+        contact:83492749234,
+        age:20
+    })
     
+   try{
+    await user.save();
+    res.send("User Added successfully");
+   } 
+
+   catch(err){
+    console.error("There is an error" + err);
+   }
 })
 
-app.get("/user/login", (req, res)=>{
 
-    throw new error("wdjjdn");
-    res.send("User Login");
-})
 
-app.use("/", (err, req, res, next)=>{
-    if(err){
-        res.status(500).send("Server error");
-    }
-})
 
-app.listen(7777, ()=>{
-    console.log("Server runing on port 7777...");
-})
+
+
