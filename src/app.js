@@ -27,7 +27,7 @@ app.post('/signup', async (req, res)=>{
    } 
 
    catch(err){
-    console.error("There is an error" + err);
+    res.status(400).send("There is an error" + err);
    }
 })
 
@@ -39,7 +39,7 @@ app.get('/find', async (req, res)=>{
     }
 
     catch(err){
-        res.status(400).send("There is some err");
+        res.status(400).send("There is some err" + err);
     }
 })
 
@@ -51,7 +51,7 @@ app.get('/feed', async (req, res)=>{
     }
 
     catch(err){
-        res.status(400).send("There is some err");
+        res.status(400).send("There is some err" + err);
     }
 })
 
@@ -64,7 +64,7 @@ app.delete('/delete', async (req, res)=>{
     }
 
     catch(err){
-        res.status(400).send("There is some err");
+        res.status(400).send("There is some err" + err);
     }
 })
 
@@ -73,12 +73,26 @@ app.patch('/update', async (req, res)=>{
     const data= req.body;
     const userId= req.body.id;
 
-    const user= await User.findByIdAndUpdate(userId, data);
+    const updateAllowed= ["id", "gender", "age", "phtotUrl", "about", "skills"]
+
+    const isUpdateAllowed= Object.keys(data).every((k)=>
+        updateAllowed.includes(k)
+    )
+
+    if(!isUpdateAllowed){
+        throw new Error("Update Not Allowed");
+    }
+
+    if(data?.skills.length>10){
+        throw new Error("Skills cannot exceed 10");
+    }
+
+    const user= await User.findByIdAndUpdate(userId, data, {returnDocument:'after'}, {runValidators:'true'});
     res.send(user);
     }
     
     catch(err){
-        res.status(400).send("There is some err");
+        res.status(400).send("There is some err" + err);
     }
 })
 
@@ -87,12 +101,12 @@ app.patch('/user', async (req, res)=>{
     const data= req.body;
     const name= req.body.firstName;
 
-    const user= await User.findOneAndUpdate({firstName: name}, data, {returnDocument:'after'});
+    const user= await User.findOneAndUpdate({firstName: name}, data, {returnDocument:'after'}, {runValidators:'true'});
     res.send(user);
     }
     
     catch(err){
-        res.status(400).send("There is some err");
+        res.status(400).send("There is some err" + err);
     }
 })
 
