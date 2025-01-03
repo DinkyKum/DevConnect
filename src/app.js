@@ -32,6 +32,30 @@ app.post('/signup', async (req, res)=>{
 })
 
 
+app.get('/find', async (req, res)=>{
+    try{
+    const user= await User.findOne({firstName:"Dinky"});
+    res.send(user);
+    }
+
+    catch(err){
+        res.status(400).send("There is some err");
+    }
+})
+
+app.get('/feed', async (req, res)=>{
+    try{
+    const user= await User.find({});
+    res.send(user);
+
+    }
+
+    catch(err){
+        res.status(400).send("There is some err");
+    }
+})
+
+
 
 
 
