@@ -55,6 +55,47 @@ app.get('/feed', async (req, res)=>{
     }
 })
 
+app.delete('/delete', async (req, res)=>{
+    try{
+        const userId= req.body.id
+        await User.findByIdAndDelete(userId)
+    
+        res.send("User Deleted Successfully");
+    }
+
+    catch(err){
+        res.status(400).send("There is some err");
+    }
+})
+
+app.patch('/update', async (req, res)=>{
+    try{
+    const data= req.body;
+    const userId= req.body.id;
+
+    const user= await User.findByIdAndUpdate(userId, data);
+    res.send(user);
+    }
+    
+    catch(err){
+        res.status(400).send("There is some err");
+    }
+})
+
+app.patch('/user', async (req, res)=>{
+    try{
+    const data= req.body;
+    const name= req.body.firstName;
+
+    const user= await User.findOneAndUpdate({firstName: name}, data, {returnDocument:'after'});
+    res.send(user);
+    }
+    
+    catch(err){
+        res.status(400).send("There is some err");
+    }
+})
+
 
 
 
