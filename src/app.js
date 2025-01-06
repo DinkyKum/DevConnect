@@ -8,6 +8,7 @@ const {validateSignupData}=require('./utils/validation')
 const bcrypt = require('bcrypt');
 const cookieParser=require('cookie-parser');
 const jwt=require('jsonwebtoken')
+const {userAuth}=require('./Middlewares/auth')
 
 app.use(express.json())
 app.use(cookieParser())
@@ -52,10 +53,12 @@ app.get('/login', async(req, res)=>{
             throw new Error("Invalid Credentials")
         }
 
-        const isPasswordValid= await bcrypt.compare(password, user.password);
+        // const isPasswordValid= await bcrypt.compare(password, user.password);
+        const isPasswordValid= await user.validatePassword(password);
 
         if(isPasswordValid){
-            const token = jwt.sign({ _id: user._id }, 'DevConnect@123');
+            const token= await user.getJWT();
+
             res.cookie("token", token);
             res.send("Login Successful");
         }
@@ -69,16 +72,9 @@ app.get('/login', async(req, res)=>{
     }
 })
 
-app.get('/profile', async(req, res)=>{
+app.get('/profile', userAuth, async(req, res)=>{
     try{
-        const cookies= req.cookies;
-        const {token}=cookies;
-
-        const decoded = await jwt.verify(token, 'DevConnect@123');
-
-        const {_id}=decoded;
-
-        const user=await User.findById(_id);
+        const user= req.user;
         res.send(user);
     }
     catch(err){
@@ -86,6 +82,11 @@ app.get('/profile', async(req, res)=>{
     }
 })
 
+
+app.get('/sendRequest', userAuth, async (req, res)=>{
+    console.log("Sending request");
+    res.send("Request Sent");
+})
 
 app.get('/find', async (req, res)=>{
     try{
