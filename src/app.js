@@ -6,8 +6,11 @@ const connectDB=require("./config/database")
 const User= require('./models/user')
 const {validateSignupData}=require('./utils/validation')
 const bcrypt = require('bcrypt');
+const cookieParser=require('cookie-parser');
+const jwt=require('jsonwebtoken')
 
 app.use(express.json())
+app.use(cookieParser())
 
 connectDB().then(() => {
     console.log("Connection established successfully");
@@ -52,6 +55,8 @@ app.get('/login', async(req, res)=>{
         const isPasswordValid= await bcrypt.compare(password, user.password);
 
         if(isPasswordValid){
+            const token = jwt.sign({ _id: user._id }, 'DevConnect@123');
+            res.cookie("token", token);
             res.send("Login Successful");
         }
 
@@ -61,6 +66,23 @@ app.get('/login', async(req, res)=>{
     }
     catch(err){
         res.status(400).send("There is some error" + err);
+    }
+})
+
+app.get('/profile', async(req, res)=>{
+    try{
+        const cookies= req.cookies;
+        const {token}=cookies;
+
+        const decoded = await jwt.verify(token, 'DevConnect@123');
+
+        const {_id}=decoded;
+
+        const user=await User.findById(_id);
+        res.send(user);
+    }
+    catch(err){
+        res.status(400).send("There is some error"+ err);
     }
 })
 
