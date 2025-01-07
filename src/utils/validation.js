@@ -1,4 +1,4 @@
-const validator=require('validator')
+const validator=require('validator');
 
 const validateSignupData=(req)=>{
     const {firstName, lastName, emailId, password}=req.body;
@@ -16,4 +16,23 @@ const validateSignupData=(req)=>{
     }
 }
 
-module.exports={validateSignupData};
+const validateEditData=(req)=>{
+    const editableFields= ["firstName", "lastName", "gender", "age", "photoUrl", "skills", "about"];
+
+    const isEditableField= Object.keys(req.body).every((k)=>editableFields.includes(k));
+
+    if(!isEditableField){
+        throw new Error("Edit Not Allowed");
+    }
+
+    if(req.body.skills.length>10){
+        throw new Error("Skills cannot exceed 10");
+    }
+
+    if(!validator.isURL(req.body.photoUrl)){
+        throw new Error("Enter a valid PhotoUrl");
+    }
+}
+
+
+module.exports={validateSignupData, validateEditData};
