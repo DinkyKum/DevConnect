@@ -15,7 +15,7 @@ profileRouter.get('/profile', userAuth, async(req, res)=>{
     }
 })
 
-profileRouter.patch('/profile/edit', userAuth, async(req, res)=>{
+profileRouter.put('/profile/edit', userAuth, async(req, res)=>{
    try { 
     validateEditData(req);
     const loggedInUser= req.user;

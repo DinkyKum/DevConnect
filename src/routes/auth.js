@@ -17,7 +17,10 @@ authRouter.post('/signup', async (req, res)=>{
       });
       
       await user.save();
-      res.send("User Added successfully");
+      const token= await user.getJWT();
+      res.cookie("token", token);
+      
+      res.json({message: "User Added Successfully", data: user})
      } 
   
      catch(err){
@@ -39,7 +42,7 @@ authRouter.post('/login', async(req, res)=>{
               const token= await user.getJWT();
   
               res.cookie("token", token);
-              res.send("Login Successful");
+              res.send(user);
           }
   
           else{

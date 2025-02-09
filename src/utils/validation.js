@@ -25,13 +25,14 @@ const validateEditData=(req)=>{
         throw new Error("Edit Not Allowed");
     }
 
-    if(req.body.skills.length>10){
+    if (req.body.skills && req.body.skills.length > 10) {
         throw new Error("Skills cannot exceed 10");
-    }
-
-    if(!validator.isURL(req.body.photoUrl)){
+      }
+    
+     
+      if (req.body.photoUrl && !validator.isURL(req.body.photoUrl)) {
         throw new Error("Enter a valid PhotoUrl");
-    }
+      }
 }
 
 

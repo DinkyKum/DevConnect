@@ -5,13 +5,13 @@ const ConnectionRequest= require('../models/connectionRequest');
 const User=require('../models/user')
 
 
-const USER_SAFE_DATA = "firstName lastName age gender age skills about";
+const USER_SAFE_DATA = "firstName lastName age gender age skills about photoUrl";
 
 userRouter.get('/user/request/received', userAuth, async (req, res)=>{
    try{ const connectionRequests= await ConnectionRequest.find({
         toUserId:req.user._id,
         status:"interested"
-    }).populate("fromUserId", ["firstName", "lastName", "age", "gender", "skills", "about"])
+    }).populate("fromUserId", ["firstName", "lastName", "age", "gender", "skills", "about", "photoUrl"])
 
     res.json({data: connectionRequests})
 }

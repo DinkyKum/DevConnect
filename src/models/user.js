@@ -55,7 +55,7 @@ const userSchema= new mongoose.Schema({
         min: 18,
     },
 
-    phtotUrl:{
+    photoUrl:{
         type:String,
         default: "https://cdn-icons-png.flaticon.com/256/149/149071.png",
         validate(value){
@@ -81,7 +81,7 @@ const userSchema= new mongoose.Schema({
 )
 
 userSchema.methods.getJWT= async function(){
-    const token= await jwt.sign({_id:this._id}, 'DevConnect@123', {expiresIn:'7d'});
+    const token= await jwt.sign({_id:this._id}, process.env.JWT_SECRET, {expiresIn:'7d'});
     return token;
 }
 
