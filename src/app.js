@@ -6,6 +6,8 @@ require('dotenv').config()
 
 require('dotenv').config()
 
+require('./utils/cronjob');
+
 
 const connectDB=require("./config/database")
 const cookieParser=require('cookie-parser');
