@@ -4,6 +4,8 @@ require("./config/database");
 
 require('dotenv').config()
 
+require('dotenv').config()
+
 
 const connectDB=require("./config/database")
 const cookieParser=require('cookie-parser');
@@ -17,10 +19,11 @@ const userRouter=require('./routes/user')
 const PORT=process.env.PORT;
 
 
+
 app.use(express.json())
 app.use(cookieParser())
 app.use(cors({
-  origin:"http://localhost:5173",
+  origin:"http://localhost:5174",
   methods: "GET,POST,PATCH,PUT,DELETE,OPTIONS",
   credentials:true,
 }));
