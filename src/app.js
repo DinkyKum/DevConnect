@@ -20,7 +20,7 @@ const profileRouter= require('./routes/profile');
 const requestRouter= require('./routes/request');
 const userRouter=require('./routes/user')
 
-const PORT=process.env.PORT;
+const port=process.env.PORT;
 
 app.use(express.json())
 app.use(cookieParser())
