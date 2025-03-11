@@ -1,12 +1,14 @@
 const express= require('express');
 const app= express();
+const mongoose = require("mongoose");
 require("./config/database");
 
-require('dotenv').config()
 
 require('dotenv').config()
 
-require('./utils/cronjob');
+require('dotenv').config()
+
+// require('./utils/cronjob');
 
 
 const connectDB=require("./config/database")
